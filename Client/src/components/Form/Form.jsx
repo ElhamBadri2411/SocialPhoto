@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import FileBase from "react-file-base64";
+import { useDispatch } from "react-redux";
 
 import useStyles from "./styles";
+import { createPost } from "../../actions/posts";
 
 const Form = () => {
   const [postData, setPostData] = useState({
@@ -12,9 +14,14 @@ const Form = () => {
     tags: "",
     selectedFile: "",
   });
-  const classes = useStyles();
 
-  const handleSubmit = () => {};
+  const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(createPost(postData));
+  };
 
   const clear = () => {};
 
@@ -43,7 +50,7 @@ const Form = () => {
           name="title"
           label="Title"
           fullWidth
-          value={postData.creator}
+          value={postData.title}
           onChange={(e) => setPostData({ ...postData, title: e.target.value })}
         />
 
@@ -52,7 +59,7 @@ const Form = () => {
           name="message"
           label="Message"
           fullWidth
-          value={postData.creator}
+          value={postData.message}
           onChange={(e) =>
             setPostData({ ...postData, message: e.target.value })
           }
@@ -63,7 +70,7 @@ const Form = () => {
           name="tags"
           label="Tags"
           fullWidth
-          value={postData.creator}
+          value={postData.tags}
           onChange={(e) => setPostData({ ...postData, tags: e.target.value })}
         />
 
@@ -88,6 +95,7 @@ const Form = () => {
           Submit
         </Button>
         <Button
+          className={classes.buttonSubmit}
           variant="container"
           size="small"
           color="secondary"
