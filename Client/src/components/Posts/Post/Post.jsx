@@ -14,11 +14,11 @@ import moment from "moment";
 import { useDispatch } from "react-redux";
 
 import useStyles from "./styles";
-import { deletePost, likePost } from "../../../actions/posts";
+import { likePost, deletePost } from "../../../actions/posts";
 
 const Post = ({ post, setCurrentId }) => {
-  const classes = useStyles();
-  const dispatch = useDispatch();
+  const classes = useStyles(); // styles
+  const dispatch = useDispatch(); // dispatch function
 
   return (
     <Card className={classes.card}>
@@ -40,15 +40,20 @@ const Post = ({ post, setCurrentId }) => {
         <Button
           style={{ color: "white" }}
           size="small"
-          onClick={() => setCurrentId(post._id)}
+          onClick={
+            () =>
+              setCurrentId(
+                post._id
+              ) /* onClick we setCurrentId to the posts Id which calls the useEffect hook and allows us to dispatch an update post action*/
+          }
         >
-          <MoreHorizIcon fontSize="default" />
+          <MoreHorizIcon fontSize="medium" />
         </Button>
       </div>
 
       <div className={classes.details}>
         <Typography variant="body2" color="textSecondary">
-          {post.tags.map((tag) => `#${tag} `)}
+          {post.tags.map((tag) => `#${tag} `) /* renders all the hashtags*/}
         </Typography>
       </div>
 
@@ -66,17 +71,25 @@ const Post = ({ post, setCurrentId }) => {
         <Button
           size="small"
           color="primary"
-          onClick={() => dispatch(likePost(post._id))}
+          onClick={() =>
+            dispatch(
+              likePost(post._id) /* onClick we dispatch a likePost action */
+            )
+          }
         >
           <ThumbUpAltIcon fontSize="small" />
-          Like
+          &nbsp; Like &nbsp;
           {post.likeCount}
         </Button>
 
         <Button
           size="small"
           color="primary"
-          onClick={() => dispatch(deletePost(post))}
+          onClick={() =>
+            dispatch(
+              deletePost(post._id) /* onClick we dispatch a deletePost action */
+            )
+          }
         >
           <DeleteIcon fontSize="small" />
           Delete

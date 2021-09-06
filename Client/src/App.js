@@ -10,40 +10,46 @@ import Posts from "./components/Posts/Posts.jsx";
 import useStyles from "./styles";
 
 const App = () => {
-  const [currentId, setCurrentId] = useState(null);
-  const classes = useStyles();
-  const dispatch = useDispatch();
+  const [currentId, setCurrentId] = useState(0); //keeps track of the current id for liking updating and deleting purposes
+  const classes = useStyles(); // styles from material UI
+  const dispatch = useDispatch(); // used to dispatch the actions from action creators
 
   useEffect(() => {
     dispatch(getPosts());
-  }, [currentId, dispatch]);
+  }, [currentId, dispatch]); // every time current id is changed or we dispatch any action we also dispatch a getPosts action
 
   return (
-    <Container maxwidth="lg">
+    <Container maxWidth="lg">
       <AppBar className={classes.appBar} position="static" color="inherit">
         <Typography className={classes.heading} variant="h2" align="center">
           Memories
         </Typography>
-        <img
-          className={classes.image}
-          src={download}
-          alt="memories"
-          height="60"
-        />
+        <img className={classes.image} src={download} alt="icon" height="60" />
       </AppBar>
+
       <Grow in>
         <Container>
           <Grid
             container
-            justify="space-between"
+            justifyContent="space-between"
             alignItems="stretch"
             spacing={3}
           >
             <Grid item xs={12} sm={7}>
-              <Posts setCurrentId={setCurrentId}/>
+              <Posts
+                setCurrentId={
+                  setCurrentId
+                } /*Passes down functions to child components*/
+              />
             </Grid>
+
             <Grid item xs={12} sm={4}>
-              <Form currentId={currentId} setCurrentId={setCurrentId} />
+              <Form
+                currentId={currentId}
+                setCurrentId={
+                  setCurrentId
+                } /*Passes down functions to child components*/
+              />
             </Grid>
           </Grid>
         </Container>

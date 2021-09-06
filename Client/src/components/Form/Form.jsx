@@ -7,7 +7,7 @@ import useStyles from "./styles";
 import { createPost, updatePost } from "../../actions/posts";
 
 const Form = ({ currentId, setCurrentId }) => {
-  const [postData, setPostData] = useState({
+  const [postData, setPostData] = useState({ // stores post data into the state
     creator: "",
     title: "",
     message: "",
@@ -15,32 +15,33 @@ const Form = ({ currentId, setCurrentId }) => {
     selectedFile: "",
   });
 
-  const post = useSelector((state) =>
-    currentId ? state.posts.find((post) => post._id === currentId) : null
+  const post = useSelector((state) => // gets information from the store
+    currentId ? state.posts.find((post) => post._id === currentId) : null //if we have a currentId then we look for the post that has that Id, if not we dont do anything
   );
 
   useEffect(() => {
     if (post) {
       setPostData(post);
     }
-  }, [post]);
+  }, [post]); // every time the post is changed, updates, change the post
 
-  const classes = useStyles();
-  const dispatch = useDispatch();
+  const classes = useStyles(); // styles
+  const dispatch = useDispatch(); // dispatch actions
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (currentId) {
-      dispatch(updatePost(currentId, postData));
+    if (currentId === 0) {
+      dispatch(createPost(postData)); // if we have a currentId set we create a new post
+      clear();
     } else {
-      dispatch(createPost(postData));
+      dispatch(updatePost(currentId, postData)); // if not we update the post that we have the id for
+      clear();
     }
-    clear();
   };
 
-  const clear = () => {
-    setCurrentId(null);
+  const clear = () => { //clear all fields
+    setCurrentId(0);
     setPostData({
       creator: "",
       title: "",
@@ -62,8 +63,8 @@ const Form = ({ currentId, setCurrentId }) => {
           {currentId ? "Editing" : "Creating"} a Memory
         </Typography>
         <TextField
-          variant="outlined"
           name="creator"
+          variant="outlined"
           label="Creator"
           fullWidth
           value={postData.creator}
@@ -71,34 +72,35 @@ const Form = ({ currentId, setCurrentId }) => {
             setPostData({ ...postData, creator: e.target.value })
           }
         />
-
         <TextField
-          variant="outlined"
           name="title"
+          variant="outlined"
           label="Title"
           fullWidth
           value={postData.title}
           onChange={(e) => setPostData({ ...postData, title: e.target.value })}
         />
-
         <TextField
-          variant="outlined"
           name="message"
+          variant="outlined"
           label="Message"
           fullWidth
+          multiline
+          rows={4}
           value={postData.message}
           onChange={(e) =>
             setPostData({ ...postData, message: e.target.value })
           }
         />
-
         <TextField
-          variant="outlined"
           name="tags"
-          label="Tags"
+          variant="outlined"
+          label="Tags (coma separated)"
           fullWidth
           value={postData.tags}
-          onChange={(e) => setPostData({ ...postData, tags: e.target.value })}
+          onChange={(e) =>
+            setPostData({ ...postData, tags: e.target.value.split(",") })
+          }
         />
 
         <div className={classes.fileInput}>
@@ -123,7 +125,7 @@ const Form = ({ currentId, setCurrentId }) => {
         </Button>
         <Button
           className={classes.buttonSubmit}
-          variant="container"
+          variant="contained"
           size="small"
           color="secondary"
           onClick={clear}
