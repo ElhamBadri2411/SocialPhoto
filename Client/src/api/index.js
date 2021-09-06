@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:5000/posts";
+const url = "https://social-photo-project.herokuapp.com/posts";
 
 // uses axios to make api calls
 export const fetchPosts = () => axios.get(url); // sends a get request to the server

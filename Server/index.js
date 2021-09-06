@@ -15,11 +15,11 @@ app.use(cors());
 
 app.use("/posts", postRoutes); //adds a /posts to every address, postRoutes are all the routes possible
 
-app.get('/', (req,  res) => {
-  res.send('Hello to Social Photo API')
+app.get("/", (req, res) => {
+  res.send("Hello to Social Photo API");
 });
 
-const PORT = process.env.PORT || 5000; // gets port number from constants file
+const PORT = process.env.PORT; // gets port number from constants file
 
 mongoose // connects to the database
   .connect(process.env.CONNECTION_URL, {
@@ -33,5 +33,3 @@ mongoose // connects to the database
     )
   )
   .catch((error) => console.log(`${error} did not connect`));
-
-//mongoose.set('useFindAndModify', false);
